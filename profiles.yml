@@ -1,0 +1,64 @@
+data_and_analytics_dbt_procedures:
+  target: dev  
+  outputs:
+    dev:
+      account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
+      database: METADATA
+      password: "{{ env_var('DBT_SNOWFLAKE_PWD_SP') }}"
+      role: SYSADMIN
+      schema: PROCEDURES_DEV
+      threads: 1
+      type: snowflake
+      user: "{{ env_var('DBT_SNOWFLAKE_USER_SP') }}"
+      warehouse: COMPUTE_WH
+    qa:
+      account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
+      database: METADATA
+      password: "{{ env_var('DBT_SNOWFLAKE_PWD_SP') }}"
+      role: SYSADMIN
+      schema: PROCEDURES_QA
+      threads: 1
+      type: snowflake
+      user: "{{ env_var('DBT_SNOWFLAKE_USER_SP') }}"
+      warehouse: COMPUTE_WH
+    prod:
+      account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
+      database: METADATA
+      password: "{{ env_var('DBT_SNOWFLAKE_PWD_SP') }}"
+      role: SYSADMIN
+      schema: PROCEDURES
+      threads: 1
+      type: snowflake
+      user: "{{ env_var('DBT_SNOWFLAKE_USER_SP') }}"
+      warehouse: COMPUTE_WH   
+    dev-gcp:
+      account: "{{ env_var('DBT_SNOWFLAKE_GCP_ACCOUNT') }}"
+      database: METADATA
+      password: "{{ env_var('DBT_SNOWFLAKE_PWD_SP') }}"
+      role: SYSADMIN
+      schema: PROCEDURES_DEV
+      threads: 1
+      type: snowflake
+      user: "{{ env_var('DBT_SNOWFLAKE_USER_SP') }}"
+      warehouse: COMPUTE_WH
+    qa-gcp:
+      account: "{{ env_var('DBT_SNOWFLAKE_GCP_ACCOUNT') }}"
+      database: METADATA
+      password: "{{ env_var('DBT_SNOWFLAKE_PWD_SP') }}"
+      role: SYSADMIN
+      schema: PROCEDURES_QA
+      threads: 1
+      type: snowflake
+      user: "{{ env_var('DBT_SNOWFLAKE_USER_SP') }}"
+      warehouse: COMPUTE_WH   
+    prod-gcp:
+      account: "{{ env_var('DBT_SNOWFLAKE_GCP_ACCOUNT') }}"
+      database: METADATA
+      password: "{{ env_var('DBT_SNOWFLAKE_PWD_SP') }}"
+      role: SYSADMIN
+      schema: PROCEDURES
+      threads: 1
+      type: snowflake
+      user: "{{ env_var('DBT_SNOWFLAKE_USER_SP') }}"
+      warehouse: COMPUTE_WH       
+

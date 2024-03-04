@@ -1,0 +1,7 @@
+{% macro create_simple_stored_procedure_gcp() %}
+CREATE OR REPLACE PROCEDURE METADATA.PROCEDURES.SIMPLE_STORED_PROCEDURE("JOBNAME" VARCHAR(16777216))
+    RETURNS VARCHAR(16777216)
+LANGUAGE JAVASCRIPT
+    EXECUTE AS OWNER
+AS '{{ simple_stored_procedure() }}';
+{% endmacro %}
