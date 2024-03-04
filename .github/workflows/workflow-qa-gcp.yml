@@ -19,4 +19,4 @@ jobs:
           pip install dbt-snowflake
           dbt deps    
       - name: Run dbt models
-        run: dbt run --models "METADATA_GCP.*" --target dev-gcp
+        run: dbt run --models "METADATA_GCP.*" --target qa-gcp
