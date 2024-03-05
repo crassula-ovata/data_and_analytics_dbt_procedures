@@ -34,8 +34,14 @@ models:
   data_and_analytics_dbt_procedures:
     METADATA_AWS:   
         +post-hook:     
+          - "{{ create_sp_ingest_transform() }}"             
+          - "{{ create_sp_s3_ingest() }}"             
+          - "{{ create_sp_run_job() }}"             
+          - "{{ create_sp_ingest_transform_old() }}"             
+          - "{{ create_sp_s3_ingest_old() }}"             
           - "{{ create_sp_data_unload() }}"    
           - "{{ create_sp_s3_data_unload() }}"             
     METADATA_GCP:  
         +post-hook:     
-          - "{{ create_simple_stored_procedure() }}"  
+          - "{{ create_sp_data_unload_gcp() }}"    
+          - "{{ create_sp_s3_data_unload_gcp() }}"             
