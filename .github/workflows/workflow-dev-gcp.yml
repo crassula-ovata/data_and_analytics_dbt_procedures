@@ -3,7 +3,7 @@ run-name: manual trigger from GitHub Actions to Snowflake
 on: workflow_dispatch
 env:
   DBT_PROFILES_DIR: ./
-  DBT_SNOWFLAKE_ACCOUNT: ${{ secrets.DBT_SNOWFLAKE_GCP_ACCOUNT }}
+  DBT_SNOWFLAKE_GCP_ACCOUNT: ${{ secrets.DBT_SNOWFLAKE_GCP_ACCOUNT }}
   DBT_SNOWFLAKE_USER_SP: ${{ secrets.DBT_SNOWFLAKE_USER_SP }}
   DBT_SNOWFLAKE_PWD_SP: ${{ secrets.DBT_SNOWFLAKE_PWD_SP }}
 jobs:
