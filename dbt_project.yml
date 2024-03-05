@@ -43,4 +43,5 @@ models:
           - "{{ create_sp_s3_data_unload() }}"             
     METADATA_GCP:  
         +post-hook:     
-          - "{{ create_simple_stored_procedure() }}"  
+          - "{{ create_sp_data_unload_gcp() }}"    
+          - "{{ create_sp_s3_data_unload_gcp() }}"             

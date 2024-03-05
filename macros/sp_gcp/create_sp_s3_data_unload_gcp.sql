@@ -1,11 +1,11 @@
-{% macro create_sp_s3_data_unload() %}
+{% macro create_sp_s3_data_unload_gcp() %}
 CREATE OR REPLACE PROCEDURE 
 
-    {% if target.name=='dev' %}
+    {% if target.name=='dev-gcp' %}
       METADATA.PROCEDURES_DEV
-    {% elif target.name=='qa' %}
+    {% elif target.name=='qa-gcp' %}
       METADATA.PROCEDURES_QA
-    {% elif target.name=='prod' %}
+    {% elif target.name=='prod-gcp' %}
       METADATA.PROCEDURES
     {% else %}
       invalid
@@ -17,5 +17,5 @@ CREATE OR REPLACE PROCEDURE
     RETURNS VARCHAR(16777216)
     LANGUAGE SQL
     EXECUTE AS CALLER
-AS '{{ sp_s3_data_unload() }}';
+AS '{{ sp_s3_data_unload_gcp() }}';
 {% endmacro %}

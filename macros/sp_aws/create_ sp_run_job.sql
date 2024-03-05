@@ -1,12 +1,14 @@
 {% macro create_sp_run_job() %}
 CREATE OR REPLACE PROCEDURE 
 
-    {% if target.name=='qa' %}
+    {% if target.name=='dev' %}
+      METADATA.PROCEDURES_DEV
+    {% elif target.name=='qa' %}
       METADATA.PROCEDURES_QA
     {% elif target.name=='prod' %}
       METADATA.PROCEDURES
     {% else %}
-      METADATA.PROCEDURES_DEV
+      invalid
     {% endif %}
 
 .SP_RUN_JOB("JOBNAME" VARCHAR(16777216), "SOURCESQL" VARCHAR(16777216), "TYPE" VARCHAR(16777216), 

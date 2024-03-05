@@ -1,12 +1,14 @@
 {% macro create_sp_s3_ingest() %}
 CREATE OR REPLACE PROCEDURE 
 
-    {% if target.name=='qa' %}
+    {% if target.name=='dev' %}
+      METADATA.PROCEDURES_DEV
+    {% elif target.name=='qa' %}
       METADATA.PROCEDURES_QA
     {% elif target.name=='prod' %}
       METADATA.PROCEDURES
     {% else %}
-      METADATA.PROCEDURES_DEV
+      invalid
     {% endif %}
 
 .SP_S3_INGEST("TYPE" VARCHAR(16777216), "SUBTYPE" VARCHAR(16777216), "DOMAIN" VARCHAR(16777216), 
