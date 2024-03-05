@@ -1,0 +1,22 @@
+name: schedule_dbt_job_sp_dev
+run-name: manual trigger from GitHub Actions to Snowflake
+on: workflow_dispatch
+env:
+  DBT_PROFILES_DIR: ./
+  DBT_SNOWFLAKE_ACCOUNT: ${{ secrets.DBT_SNOWFLAKE_GCP_ACCOUNT }}
+  DBT_SNOWFLAKE_USER_SP: ${{ secrets.DBT_SNOWFLAKE_USER_SP }}
+  DBT_SNOWFLAKE_PWD_SP: ${{ secrets.DBT_SNOWFLAKE_PWD_SP }}
+jobs:
+  schedule_dbt_job_bha_dev:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-python@v1
+        with:
+          python-version: '3.10.13'
+      - name: Install dependencies
+        run: |
+          pip install dbt-snowflake
+          dbt deps    
+      - name: Run dbt models
+        run: dbt run --models "METADATA_GCP.*" --target prod-gcp
