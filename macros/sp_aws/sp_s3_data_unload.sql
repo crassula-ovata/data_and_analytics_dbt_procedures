@@ -40,7 +40,7 @@ BEGIN
         --output one file per record
         EXECUTE IMMEDIATE             
             $$
-                COPY INTO @s3_json_dump_case/case_data_$$ || rec.grp || $$.json 
+                COPY INTO @s3_json_dump_case/$$ || subtype || $$_data_$$ || rec.grp || $$.json 
                 from (SELECT parse_json(''$$ || replace(rec.payload, ''\\'''', ''\\\\\\'''') || $$''))
                     file_format = $$ || dl_db || $$.$$ || dl_schema || $$.sf_to_s3_unload_file_format
                     SINGLE=TRUE

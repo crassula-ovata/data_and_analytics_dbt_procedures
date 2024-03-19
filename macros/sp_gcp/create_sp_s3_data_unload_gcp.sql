@@ -7,6 +7,8 @@ CREATE OR REPLACE PROCEDURE
       METADATA.PROCEDURES_QA
     {% elif target.name=='prod-gcp' %}
       METADATA.PROCEDURES
+    {% elif target.name=='test-gcp' %}
+      METADATA.PROCEDURES_TEST
     {% else %}
       invalid
     {% endif %}
