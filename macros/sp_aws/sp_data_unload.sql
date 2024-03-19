@@ -33,9 +33,33 @@ BEGIN
           --case statement to run current step; this allows different combinations of steps
           CASE step
           WHEN ''UNLOAD_SF_TO_S3_AWS'' THEN
-              CALL METADATA.PROCEDURES.sp_s3_data_unload(''DATA_UNLOAD'', ''client'', ''DM.VW_CLIENT_DUPLICATES_API_PAYLOAD'', :domain, :dl_db, :dl_schema, :dm_db, :task_id, :path_time_override) INTO :step_result;
+              CALL 
+                {% if target.name=='dev' %}
+                METADATA.PROCEDURES_DEV
+                {% elif target.name=='qa' %}
+                METADATA.PROCEDURES_QA
+                {% elif target.name=='prod' %}
+                METADATA.PROCEDURES
+                {% elif target.name=='test' %}
+                METADATA.PROCEDURES_TEST
+                {% else %}
+                invalid
+                {% endif %}               
+              .sp_s3_data_unload(''DATA_UNLOAD'', ''client'', ''DM.VW_CLIENT_DUPLICATES_API_PAYLOAD'', :domain, :dl_db, :dl_schema, :dm_db, :task_id, :path_time_override) INTO :step_result;
           WHEN ''UNLOAD_SF_TO_S3_GCP'' THEN
-              CALL METADATA.PROCEDURES.sp_s3_data_unload(''DATA_UNLOAD'', ''ladders'', ''DM.VW_LADDERS_API_PAYLOAD'', :domain, :dl_db, :dl_schema, :dm_db, :task_id, :path_time_override) INTO :step_result;
+              CALL 
+                {% if target.name=='dev' %}
+                METADATA.PROCEDURES_DEV
+                {% elif target.name=='qa' %}
+                METADATA.PROCEDURES_QA
+                {% elif target.name=='prod' %}
+                METADATA.PROCEDURES
+                {% elif target.name=='test' %}
+                METADATA.PROCEDURES_TEST
+                {% else %}
+                invalid
+                {% endif %}               
+              .sp_s3_data_unload(''DATA_UNLOAD'', ''ladders'', ''DM.VW_LADDERS_API_PAYLOAD'', :domain, :dl_db, :dl_schema, :dm_db, :task_id, :path_time_override) INTO :step_result;
           ELSE
               RAISE step_exception;
           END CASE;
