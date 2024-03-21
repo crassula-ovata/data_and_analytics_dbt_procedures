@@ -22,7 +22,19 @@ BEGIN
   IF (step_count < 0) THEN --run the steps param if no steps defined with delimiter
       step := steps;
       
-      CALL METADATA.PROCEDURES.SP_RUN_JOB('''', :steps, :type, :subtype, :domain, :dl_db, :dl_schema, :dm_db, :task_id) INTO :step_result;
+      CALL 
+        {% if target.name=='dev' %}
+        METADATA.PROCEDURES_DEV
+        {% elif target.name=='qa' %}
+        METADATA.PROCEDURES_QA
+        {% elif target.name=='prod' %}
+        METADATA.PROCEDURES
+        {% elif target.name=='test' %}
+        METADATA.PROCEDURES_TEST
+        {% else %}
+        invalid
+        {% endif %}      
+      .SP_RUN_JOB('''', :steps, :type, :subtype, :domain, :dl_db, :dl_schema, :dm_db, :task_id) INTO :step_result;
 
       --check result of step for error
       IF (step_result ilike ''%error%'') THEN 
@@ -38,19 +50,103 @@ BEGIN
           --case statement to run current step; this allows different combinations of steps
           CASE step
           WHEN ''S3_INGEST'' THEN
-              CALL METADATA.PROCEDURES.sp_s3_ingest(''DATA_LOAD'', ''RAW_STAGE'', :domain, :dl_db, :dl_schema, :dm_db, :task_id, :path_time_override, :sources) INTO :step_result;
+              CALL 
+                {% if target.name=='dev' %}
+                METADATA.PROCEDURES_DEV
+                {% elif target.name=='qa' %}
+                METADATA.PROCEDURES_QA
+                {% elif target.name=='prod' %}
+                METADATA.PROCEDURES
+                {% elif target.name=='test' %}
+                METADATA.PROCEDURES_TEST
+                {% else %}
+                invalid
+                {% endif %}               
+              .sp_s3_ingest(''DATA_LOAD'', ''RAW_STAGE'', :domain, :dl_db, :dl_schema, :dm_db, :task_id, :path_time_override, :sources) INTO :step_result;
           WHEN ''STAGE_TO_RAW'' THEN
-              CALL METADATA.PROCEDURES.SP_RUN_JOB(''Raw Data Load'', '''', ''DATA_LOAD'', ''STAGE_TO_RAW'', :domain, :dl_db, :dl_schema, :dm_db, :task_id) INTO :step_result; 
+              CALL 
+                {% if target.name=='dev' %}
+                METADATA.PROCEDURES_DEV
+                {% elif target.name=='qa' %}
+                METADATA.PROCEDURES_QA
+                {% elif target.name=='prod' %}
+                METADATA.PROCEDURES
+                {% elif target.name=='test' %}
+                METADATA.PROCEDURES_TEST
+                {% else %}
+                invalid
+                {% endif %}               
+              .SP_RUN_JOB(''Raw Data Load'', '''', ''DATA_LOAD'', ''STAGE_TO_RAW'', :domain, :dl_db, :dl_schema, :dm_db, :task_id) INTO :step_result; 
           WHEN ''UPDATE_CONFIG'' THEN
-              CALL METADATA.PROCEDURES.SP_RUN_JOB(''Update Config'', '''', ''CONFIG'', ''FIELD_CONFIG'', :domain, :dl_db, :dl_schema, :dm_db, :task_id) INTO :step_result; 
+              CALL 
+                {% if target.name=='dev' %}
+                METADATA.PROCEDURES_DEV
+                {% elif target.name=='qa' %}
+                METADATA.PROCEDURES_QA
+                {% elif target.name=='prod' %}
+                METADATA.PROCEDURES
+                {% elif target.name=='test' %}
+                METADATA.PROCEDURES_TEST
+                {% else %}
+                invalid
+                {% endif %}               
+              .SP_RUN_JOB(''Update Config'', '''', ''CONFIG'', ''FIELD_CONFIG'', :domain, :dl_db, :dl_schema, :dm_db, :task_id) INTO :step_result; 
           WHEN ''RECREATE_VIEWS'' THEN
-              CALL METADATA.PROCEDURES.SP_RUN_JOB('''', ''SELECT SQL_TEXT FROM '' || :dm_db || ''.INTEGRATION.GENERATE_ALL_VIEWS;'', ''TRANSFORM'', ''RECREATE_VIEWS'', :domain, :dl_db, :dl_schema, :dm_db, :task_id) INTO :step_result; 
+              CALL 
+                {% if target.name=='dev' %}
+                METADATA.PROCEDURES_DEV
+                {% elif target.name=='qa' %}
+                METADATA.PROCEDURES_QA
+                {% elif target.name=='prod' %}
+                METADATA.PROCEDURES
+                {% elif target.name=='test' %}
+                METADATA.PROCEDURES_TEST
+                {% else %}
+                invalid
+                {% endif %}               
+              .SP_RUN_JOB('''', ''SELECT SQL_TEXT FROM '' || :dm_db || ''.INTEGRATION.GENERATE_ALL_VIEWS;'', ''TRANSFORM'', ''RECREATE_VIEWS'', :domain, :dl_db, :dl_schema, :dm_db, :task_id) INTO :step_result; 
           WHEN ''RECREATE_TABLES'' THEN
-              CALL METADATA.PROCEDURES.SP_RUN_JOB('''', ''SELECT SQL_TEXT FROM '' || :dm_db || ''.INTEGRATION.GENERATE_ALL_TABLES;'', ''TRANSFORM'', ''RECREATE_TABLES'', :domain, :dl_db, :dl_schema, :dm_db, :task_id) INTO :step_result; 
+              CALL 
+                {% if target.name=='dev' %}
+                METADATA.PROCEDURES_DEV
+                {% elif target.name=='qa' %}
+                METADATA.PROCEDURES_QA
+                {% elif target.name=='prod' %}
+                METADATA.PROCEDURES
+                {% elif target.name=='test' %}
+                METADATA.PROCEDURES_TEST
+                {% else %}
+                invalid
+                {% endif %}               
+              .SP_RUN_JOB('''', ''SELECT SQL_TEXT FROM '' || :dm_db || ''.INTEGRATION.GENERATE_ALL_TABLES;'', ''TRANSFORM'', ''RECREATE_TABLES'', :domain, :dl_db, :dl_schema, :dm_db, :task_id) INTO :step_result; 
           WHEN ''INCR_TABLES'' THEN
-              CALL METADATA.PROCEDURES.SP_RUN_JOB('''', ''SELECT SQL_TEXT FROM '' || :dm_db || ''.INTEGRATION.generate_all_tables_incr_load;'', ''TRANSFORM'', ''TABLES_INCR'', :domain, :dl_db, :dl_schema, :dm_db, :task_id) INTO :step_result; 
+              CALL 
+                {% if target.name=='dev' %}
+                METADATA.PROCEDURES_DEV
+                {% elif target.name=='qa' %}
+                METADATA.PROCEDURES_QA
+                {% elif target.name=='prod' %}
+                METADATA.PROCEDURES
+                {% elif target.name=='test' %}
+                METADATA.PROCEDURES_TEST
+                {% else %}
+                invalid
+                {% endif %}               
+              .SP_RUN_JOB('''', ''SELECT SQL_TEXT FROM '' || :dm_db || ''.INTEGRATION.generate_all_tables_incr_load;'', ''TRANSFORM'', ''TABLES_INCR'', :domain, :dl_db, :dl_schema, :dm_db, :task_id) INTO :step_result; 
           WHEN ''STAGE_DELETE'' THEN
-              CALL METADATA.PROCEDURES.SP_RUN_JOB(''Raw Data Stage Delete'', '''', ''DATA_LOAD'', ''STAGE_DELETE'', :domain, :dl_db, :dl_schema, :dm_db, :task_id) INTO :step_result;
+              CALL 
+                {% if target.name=='dev' %}
+                METADATA.PROCEDURES_DEV
+                {% elif target.name=='qa' %}
+                METADATA.PROCEDURES_QA
+                {% elif target.name=='prod' %}
+                METADATA.PROCEDURES
+                {% elif target.name=='test' %}
+                METADATA.PROCEDURES_TEST
+                {% else %}
+                invalid
+                {% endif %}               
+              .SP_RUN_JOB(''Raw Data Stage Delete'', '''', ''DATA_LOAD'', ''STAGE_DELETE'', :domain, :dl_db, :dl_schema, :dm_db, :task_id) INTO :step_result;
           ELSE
               RAISE step_exception;
           END CASE;
