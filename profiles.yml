@@ -34,12 +34,12 @@ data_and_analytics_dbt_procedures:
     test:
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
       database: METADATA
-      password: "{{ env_var('DBT_SNOWFLAKE_PWD_SP') }}"
-      role: SYSADMIN
+      password: "{{ env_var('DBT_SNOWFLAKE_PWD') }}"
+      role: user_dbt_test
       schema: PROCEDURES_TEST
       threads: 1
       type: snowflake
-      user: "{{ env_var('DBT_SNOWFLAKE_USER_SP') }}"
+      user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
       warehouse: COMPUTE_WH         
     dev-gcp:
       account: "{{ env_var('DBT_SNOWFLAKE_GCP_ACCOUNT') }}"
@@ -74,10 +74,10 @@ data_and_analytics_dbt_procedures:
     test-gcp:
       account: "{{ env_var('DBT_SNOWFLAKE_GCP_ACCOUNT') }}"
       database: METADATA
-      password: "{{ env_var('DBT_SNOWFLAKE_PWD_SP') }}"
-      role: SYSADMIN
+      password: "{{ env_var('DBT_SNOWFLAKE_PWD') }}"
+      role: user_dbt_test
       schema: PROCEDURES_TEST
       threads: 1
       type: snowflake
-      user: "{{ env_var('DBT_SNOWFLAKE_USER_SP') }}"
+      user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
       warehouse: COMPUTE_WH       
