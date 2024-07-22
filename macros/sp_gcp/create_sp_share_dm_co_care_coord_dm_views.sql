@@ -1,14 +1,20 @@
 {%- macro create_sp_share_dm_co_care_coord_dm_views() -%}
-    {%- if target.name=='qa-gcp' or target.name=='prod-gcp' -%}
 CREATE OR REPLACE PROCEDURE UTIL.REPLICATION.
-        {%- if target.name=='qa-gcp' -%}
+    {%- if target.name=='test-gcp' -%}
+SP_SHARE_DM_CO_CARE_COORD_TEST_DM_VIEWS
+-- NOTE: DO NOT RUN - FOR TESTING ONLY
+    {%- elif target.name=='dev-gcp' -%}
+SP_SHARE_DM_CO_CARE_COORD_DEV_DM_VIEWS
+-- NOTE: DO NOT RUN - FOR TESTING ONLY
+    {%- elif target.name=='qa-gcp' -%}
 SP_SHARE_DM_CO_CARE_COORD_QA_DM_VIEWS
-        {%- elif target.name=='prod-gcp' -%}
+    {%- elif target.name=='prod-gcp' -%}
 SP_SHARE_DM_CO_CARE_COORD_PROD_DM_VIEWS
-        {%- endif -%}
+    {%- endif -%}
 RETURNS VARCHAR
 LANGUAGE SQL
 AS
-'{{ sp_share_dm_care_coord_dm_views() }}';
-    {%- endif -%}
+$$
+{{ sp_share_dm_care_coord_dm_views() }}
+$$;
 {%- endmacro -%}

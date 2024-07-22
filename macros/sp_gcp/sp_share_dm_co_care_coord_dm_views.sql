@@ -1,6 +1,11 @@
 {%- macro sp_share_dm_co_care_coord_dm_views() -%}
-{%- if target.name=='qa-gcp' or target.name=='prod-gcp' -%}
-    {%- if target.name=='qa-gcp' -%}
+    {%- if target.name=='test-gcp' -%}
+        {%- set db_name = 'dm_co_care_coord_test' -%}
+        {%- set share_name = 'bha_uat_s' -%}
+    {%- elif target.name=='dev-gcp' -%}
+        {%- set db_name = 'dm_co_care_coord_dev' -%}
+        {%- set share_name = 'bha_uat_s' -%}
+    {%- elif target.name=='qa-gcp' -%}
         {%- set db_name = 'dm_co_care_coord_qa' -%}
         {%- set share_name = 'bha_uat_s' -%}
     {%- elif target.name=='prod-gcp' -%}
@@ -22,5 +27,4 @@ BEGIN
     grant select on view {{db_name}}.dm.VW_FORM_METADATA to share {{share_name}};
     grant select on view {{db_name}}.dm.VW_SERVICE_CLINIC_PROVIDER_CLIENT to share {{share_name}};
 END
-{%- endif -%}
 {%- endmacro -%}
