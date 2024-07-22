@@ -13,9 +13,9 @@
         {%- set share_name = 'bha_prod_s' -%}
     {%- endif -%}
 BEGIN
-    {%- if target.name=='test-gcp' or target.name=='dev-gcp' -%}
+    {%- if target.name=='test-gcp' or target.name=='dev-gcp' %}
     -- NOTE: DO NOT RUN - FOR TESTING ONLY
-    {%- endif -%}
+    {%- endif %}
     grant select on view {{db_name}}.dm.VW_ARCHIVED_CASES to share {{share_name}};
     grant select on view {{db_name}}.dm.VW_CLIENT_ALIAS to share {{share_name}};
     grant select on view {{db_name}}.dm.VW_CLINIC_PROVIDER to share {{share_name}};
