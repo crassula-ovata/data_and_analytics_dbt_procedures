@@ -2,10 +2,8 @@
 CREATE OR REPLACE PROCEDURE UTIL.REPLICATION.
     {%- if target.name=='test-gcp' -%}
 SP_SHARE_DM_CO_CARE_COORD_TEST_DM_VIEWS
--- NOTE: DO NOT RUN - FOR TESTING ONLY
     {%- elif target.name=='dev-gcp' -%}
 SP_SHARE_DM_CO_CARE_COORD_DEV_DM_VIEWS
--- NOTE: DO NOT RUN - FOR TESTING ONLY
     {%- elif target.name=='qa-gcp' -%}
 SP_SHARE_DM_CO_CARE_COORD_QA_DM_VIEWS
     {%- elif target.name=='prod-gcp' -%}
