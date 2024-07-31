@@ -74,6 +74,34 @@ BEGIN
                 invalid
                 {% endif %}  
               .sp_s3_data_unload(''DATA_UNLOAD'', ''location'', ''DM.VW_LOCATION_API_PAYLOAD'', :domain, :dl_db, :dl_schema, :dm_db, :task_id, :path_time_override) INTO :step_result;              
+          WHEN ''UNLOAD_SF_TO_S3_GCP_CASE_EXTERNAL_ID'' THEN
+              CALL 
+                {% if target.name=='dev-gcp' %}
+                METADATA.PROCEDURES_DEV
+                {% elif target.name=='qa-gcp' %}
+                METADATA.PROCEDURES_QA
+                {% elif target.name=='prod-gcp' %}
+                METADATA.PROCEDURES
+                {% elif target.name=='test-gcp' %}
+                METADATA.PROCEDURES_TEST
+                {% else %}
+                invalid
+                {% endif %}                
+              .sp_s3_data_unload(''DATA_UNLOAD'', ''case_external_id'', ''DM.VW_EXTERNAL_ID_API_PAYLOAD'', :domain, :dl_db, :dl_schema, :dm_db, :task_id, :path_time_override) INTO :step_result;
+          WHEN ''UNLOAD_SF_TO_S3_GCP_LOCATION_SITE_CODE'' THEN
+              CALL 
+                {% if target.name=='dev-gcp' %}
+                METADATA.PROCEDURES_DEV
+                {% elif target.name=='qa-gcp' %}
+                METADATA.PROCEDURES_QA
+                {% elif target.name=='prod-gcp' %}
+                METADATA.PROCEDURES
+                {% elif target.name=='test-gcp' %}
+                METADATA.PROCEDURES_TEST
+                {% else %}
+                invalid
+                {% endif %}  
+              .sp_s3_data_unload(''DATA_UNLOAD'', ''location_site_code'', ''DM.VW_SITE_CODE_API_PAYLOAD'', :domain, :dl_db, :dl_schema, :dm_db, :task_id, :path_time_override) INTO :step_result;
           ELSE
               RAISE step_exception;
           END CASE;
