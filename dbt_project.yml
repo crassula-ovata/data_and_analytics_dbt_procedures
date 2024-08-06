@@ -45,3 +45,4 @@ models:
         +post-hook:     
           - "{{ create_sp_data_unload_gcp() }}"    
           - "{{ create_sp_s3_data_unload_gcp() }}"             
+          - "{{ create_sp_share_dm_co_care_coord_dm_views() }}"
